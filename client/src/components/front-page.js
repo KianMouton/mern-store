@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import chubbySugarLogo  from '../images/chubby-sugar-logo.jpg';
 import { gsap } from 'gsap';
 import SplitText from 'split-text-js'; 
 gsap.registerPlugin(SplitText);
@@ -41,7 +42,7 @@ const FrontPage = () => {
                 </div>
             </div>
             <div className='front-image'>
-                <img src='https://via.placeholder.com/300' alt='Placeholder' />
+                <img className='logo' src={chubbySugarLogo} alt='Placeholder' />
             </div>
         </div>
     );
