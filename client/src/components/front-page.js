@@ -42,7 +42,7 @@ const FrontPage = () => {
                 </div>
             </div>
             <div className='front-image'>
-                <img className='logo' src={chubbySugarLogo} alt='Placeholder' />
+                <img className='logo' src={chubbySugarLogo} alt='chubby sugar logo' />
             </div>
         </div>
     );

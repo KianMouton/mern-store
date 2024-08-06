@@ -1,14 +1,17 @@
-import Navbar from './components/navbar.js'
-import FrontPage from './components/front-page.js';
-import Products from './components/products.js';
+import Main from './components/mainLayout.js';
 import './App.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+const router = createBrowserRouter([
+  { path: '/',
+    element: <Main />,
+  }
+])
 
 function App() {
   return (
     <div className="App">
-       <Navbar />
-       <FrontPage />
-       <Products />
+       <RouterProvider router={router} />
     </div>
   );
 }
