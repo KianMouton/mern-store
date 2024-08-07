@@ -1,6 +1,7 @@
 import Navbar from './navbar.js'
 import FrontPage from './front-page.js';
 import Products from './products.js';
+import Footer from './footer.js';
 
 function Main() {
     return (
@@ -8,6 +9,7 @@ function Main() {
          <Navbar />
          <FrontPage />
          <Products />
+         <Footer />
       </div>
     );
 }

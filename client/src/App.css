@@ -28,6 +28,10 @@
   box-shadow: 5px 5px 40px white;
 }
 
+.nav-link {
+  text-decoration: none;
+}
+
 /* front Page */
 .front-page {
   display: flex;
@@ -92,4 +96,10 @@
   background-color: white;
   color: black;
   box-shadow: 5px 5px 40px white;
+}
+
+.footer p {
+  background-color: black;
+  color: white;
+  text-align: center;
 }

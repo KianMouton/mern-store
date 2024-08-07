@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 const mockProducts = [
     {
         id: 1,
@@ -37,7 +39,7 @@ const Products = () => {
                     </div>
                 )
             })}
-            <button className='load-more'>Load More</button>
+            <Link to='/products'><button className='load-more'>Load More</button></Link>
         </div>
     )
 }
