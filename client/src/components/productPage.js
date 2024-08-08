@@ -23,13 +23,12 @@ function ProductPage() {
 
     return (
         <div className='product-page'>
-            <h1>Product Page</h1>
             {/* fetch product data from backend */}
-            <p>{product.name}</p>
+            <h1>{product.name}</h1>
             <img className="product-page-img" src={product.imageUrl} alt={product.name} />
-            <p>description</p>
+            <p className='title'>description</p>
             <p>{product.description}</p>
-            <p>Price</p>
+            <p className='title'>Price</p>
             <p>{product.price}</p>
         </div>
     )
