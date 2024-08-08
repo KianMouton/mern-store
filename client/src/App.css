@@ -109,3 +109,8 @@
   color: white;
   text-align: center;
 }
+
+.product-page-img {
+  width: 400px;
+  height: auto;
+}

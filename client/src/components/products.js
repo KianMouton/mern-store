@@ -32,12 +32,14 @@ const Products = () => {
             <h1>Products</h1>
             {products.map((product) => {
                 return (
+                    <Link to={`/products/${product._id}`}>
                     <div key={product._id} className='product'>
                         <img src={product.imageUrl} alt={product.name} />
                         <h3>{product.name}</h3>
                         <p>{product.description}</p>
                         <p>R{product.price}</p>
                     </div>
+                    </Link>
                 )
             })}
             <Link to='/products'><button className='load-more'>Load More</button></Link>
