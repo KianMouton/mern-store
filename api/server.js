@@ -35,8 +35,13 @@ const productSchema = new Schema({
 // model from schema
 const Product = model('Product', productSchema);
 
+//test / endpoint
+app.get('/', (req, res) => {
+    res.json({'message': "hello"});
+})
+
 //uploading products endpoint
-app.post('/upload', async (res, req) => {
+app.post('/upload', async (req, res) => {
     // Save product to MongoDB
     try {
         const product =new Product(req.body);
@@ -53,7 +58,7 @@ app.post('/upload', async (res, req) => {
 app.get('/products', async (req, res) => {
     try {
         const products = await Product.find();
-        res.status(200).send(products);
+        res.json(products);
     } catch (error) {
         res.status(500).send(error);
     }

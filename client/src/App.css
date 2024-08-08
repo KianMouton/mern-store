@@ -83,6 +83,12 @@
   color: black;
 }
 
+.product img {
+  width: 400px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
 .load-more {
   border: 2px solid white;
   background-color: black;
