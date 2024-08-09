@@ -78,6 +78,10 @@
   transition: all 0.2s ease-in-out;
 }
 
+.product:hover {
+  box-shadow: 5px 5px 20px rgb(153, 32, 224);
+}
+
 .product img, h3, p {
   background-color: white;
   color: black;
@@ -134,4 +138,5 @@
 .product-page-img {
   width: 400px;
   height: auto;
+  border-radius: 30px;
 }

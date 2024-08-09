@@ -1,4 +1,5 @@
 import Main from './components/mainLayout.js';
+import Navbar from './components/navbar.js';
 import Products from './components/products.js';
 import ProductPage from './components/productPage.js';
 import './App.css';
@@ -7,15 +8,24 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Main />,
+    element:
+      <Main />
   },
   {
     path: '/products',
-    element: <Products />,
+    element: 
+    <layout>
+      <Navbar />
+      <Products />
+    </layout>
   },
   {
     path: '/products/:id',
-    element: <ProductPage />
+    element:
+    <layout>
+      <Navbar />
+      <ProductPage />
+    </layout>
   }
 ])
 

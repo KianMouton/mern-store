@@ -28,6 +28,7 @@ const Products = () => {
     }
 
     return (
+        <div>
         <div className='products'>
             <h1>Products</h1>
             {products.map((product) => {
@@ -43,6 +44,7 @@ const Products = () => {
                 )
             })}
             <Link to='/products'><button className='load-more'>Load More</button></Link>
+        </div>
         </div>
     )
 }
