@@ -31,6 +31,7 @@ const Products = () => {
         <div>
         <div className='products'>
             <h1>Products</h1>
+            <div className='products-container'>
             {products.map((product) => {
                 return (
                     <Link to={`/products/${product._id}`}>
@@ -43,6 +44,7 @@ const Products = () => {
                     </Link>
                 )
             })}
+            </div>
             <Link to='/products'><button className='load-more'>Load More</button></Link>
         </div>
         </div>

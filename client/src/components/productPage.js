@@ -29,7 +29,7 @@ function ProductPage() {
             <p className='title'>description</p>
             <p>{product.description}</p>
             <p className='title'>Price</p>
-            <p>{product.price}</p>
+            <p>R{product.price.toFixed(2)}</p>
         </div>
     )
 }
