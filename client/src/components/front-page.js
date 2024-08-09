@@ -6,6 +6,7 @@ gsap.registerPlugin(SplitText);
 
 const FrontPage = () => {
     useEffect(() => {
+        //animation for the the text array
         const titles = gsap.utils.toArray('.text-wrapper p'); 
         const tl = gsap.timeline({ repeat: -1 });
 
@@ -26,7 +27,7 @@ const FrontPage = () => {
                 stagger: .02, 
             }, "<1"); 
         });
-
+        
     }, []); 
 
     return (
