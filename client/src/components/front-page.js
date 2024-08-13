@@ -41,6 +41,9 @@ const FrontPage = () => {
                     <p>Stickers</p>
                     <p>Anything</p>
                 </div>
+                <p className='description'>Chubby sugar creates custom clothing
+                    that transforms your designs into a reality.
+                </p>
             </div>
             <div className='front-image'>
                 <img className='logo' src={chubbySugarLogo} alt='chubby sugar logo' />

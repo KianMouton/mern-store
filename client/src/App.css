@@ -43,6 +43,7 @@
 
 .front-page h1 {
   border-bottom: 3px solid rgb(144, 26, 228);
+  text-align: center;
 }
 
 .text-wrapper p {
@@ -51,6 +52,13 @@
   text-align: center;
   margin: 0;
   line-height: 0;
+}
+
+.front-page .description {
+  margin-top: 50px;
+  max-width: 300px;
+  background-color: black;
+  color: white;
 }
 
 .logo {
@@ -169,6 +177,11 @@
 
   .front-page {
     flex-direction: row;
+  }
+
+  .front-page .description {
+    margin-top: 50px;
+    max-width: 400px;
   }
 
   .products {
