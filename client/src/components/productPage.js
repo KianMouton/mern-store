@@ -24,12 +24,12 @@ function ProductPage() {
     return (
         <div className='product-page'>
             {/* fetch product data from backend */}
-            <h1>{product.name}</h1>
             <img className="product-page-img" src={product.imageUrl} alt={product.name} />
-            <p className='title'>description</p>
-            <p>{product.description}</p>
+            <p className='title'>{product.name}</p>
+            <p className='product-page-text'>{product.description}</p>
             <p className='title'>Price</p>
-            <p>R{product.price}</p>
+            <p className='product-page-text'>R{product.price}</p>
+            <button className='cart-btn'>Add to Cart</button>
         </div>
     )
 }
