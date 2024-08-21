@@ -1,6 +1,10 @@
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { useEffect} from 'react';
+// font awesome for cart icon
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCartShopping } from  '@fortawesome/free-solid-svg-icons';
+
 
 const Navbar = () => {
 
@@ -15,6 +19,7 @@ const Navbar = () => {
             <Link to='/' className='nav-link'><p>What I do</p></Link>
             <Link to='/products' className='nav-link'><p>Products</p></Link>
             <Link to='/' className='nav-link'><p>Contact</p></Link>
+            <Link to='/cart' className='nav-link'><FontAwesomeIcon icon={faCartShopping} /></Link>
         </nav>
     );
 }

@@ -4,6 +4,13 @@ import { useState, useEffect} from 'react';
 function ProductPage() {
 
     const [product, setProduct] = useState({});
+    const [cart, setCart] = useState([]);
+
+    const addToCart = (product) => {
+        // add product to cart
+        setCart([...cart, product]);
+        console.log(cart);
+    }
 
     const { id } = useParams();
 
@@ -29,7 +36,7 @@ function ProductPage() {
             <p className='product-page-text'>{product.description}</p>
             <p className='title'>Price</p>
             <p className='product-page-text'>R{product.price}</p>
-            <button className='cart-btn'>Add to Cart</button>
+            <button onClick={() => addToCart(product.name)} className='cart-btn'>Add to Cart</button>
         </div>
     )
 }

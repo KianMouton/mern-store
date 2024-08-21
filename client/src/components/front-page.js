@@ -41,7 +41,7 @@ const FrontPage = () => {
                     <p>Stickers</p>
                     <p>Anything</p>
                 </div>
-                <p className='description'>Chubby sugar creates custom clothing
+                <p className='description'>Chubby Sugar creates custom clothing
                     that transforms your designs into a reality.
                 </p>
             </div>

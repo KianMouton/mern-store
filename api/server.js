@@ -35,6 +35,31 @@ const productSchema = new Schema({
 // model from schema
 const Product = model('Product', productSchema);
 
+//schema for cart
+const cartSchema = new Schema({
+    items: [
+        {
+            productId: {
+                type: [String],
+                ref: 'Product'
+            },
+            quantity: {
+                type: Number,
+                required: true,
+                min: 1
+            }
+        }
+    ]
+});
+
+const Cart = model('Cart', cartSchema);
+
+// endpoint to add items to the cart
+app.post('/cart/:id', (req, res) => {
+    const productId = req.params.id;
+    
+})
+
 //test / endpoint
 app.get('/', (req, res) => {
     res.json({'message': "hello"});
@@ -44,7 +69,7 @@ app.get('/', (req, res) => {
 app.post('/upload', async (req, res) => {
     // Save product to MongoDB
     try {
-        const product =new Product(req.body);
+        const product = new Product(req.body);
         const newProduct = await product.save();
         res.send(newProduct);
     }
