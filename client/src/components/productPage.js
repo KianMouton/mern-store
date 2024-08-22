@@ -1,18 +1,12 @@
 import { useParams } from 'react-router-dom';
-import { useState, useEffect} from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { CartContext } from '../components/cartContext';
 
 function ProductPage() {
-
     const [product, setProduct] = useState({});
-    const [cart, setCart] = useState([]);
-
-    const addToCart = (product) => {
-        // add product to cart
-        setCart([...cart, product]);
-        console.log(cart);
-    }
-
     const { id } = useParams();
+    //the addToCart context
+    const { addToCart } = useContext(CartContext);
 
     useEffect(() => {
         getProduct(id)
@@ -28,6 +22,10 @@ function ProductPage() {
         setProduct(data);
     }
 
+    const handleAddToCart = () => {
+        addToCart(product);
+    }
+
     return (
         <div className='product-page'>
             {/* fetch product data from backend */}
@@ -36,9 +34,22 @@ function ProductPage() {
             <p className='product-page-text'>{product.description}</p>
             <p className='title'>Price</p>
             <p className='product-page-text'>R{product.price}</p>
-            <button onClick={() => addToCart(product.name)} className='cart-btn'>Add to Cart</button>
+            <button onClick={handleAddToCart} className='cart-btn'>Add to Cart</button>
         </div>
     )
 }
+
+//cart component
+const  Cart = () => {
+
+    return (
+        <div>
+            <h1>Cart Page</h1>
+            <p>this is the cart lol</p>
+        </div>
+    )
+}
+
+export { Cart };
 
 export default ProductPage;
