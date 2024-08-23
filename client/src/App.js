@@ -2,7 +2,7 @@ import Main from './components/mainLayout.js';
 import Navbar from './components/navbar.js';
 import Products from './components/products.js';
 import ProductPage from './components/productPage.js';
-import Cart from './components/productPage.js';
+import Cart from './components/cart.js';
 import CartProvider from './components/cartContext.js';
 import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
