@@ -219,6 +219,14 @@
   box-shadow: 5px 5px 20px rgb(0, 0, 0);
 }
 
+.quantity-div {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background-color: white;
+  color: black;
+}
+
 /* media queries for desktop */
 @media (min-width: 1000px) {
   .navbar {

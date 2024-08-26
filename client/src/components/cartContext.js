@@ -3,7 +3,7 @@ import { createContext, useState, useEffect } from 'react';
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-    const [cartItems, setCartItems] = useState([]);
+    const [cartItems, setCartItems] = useState({});
 
     useEffect(() => {
         // Load cart items from local storage if available
@@ -19,15 +19,35 @@ export const CartProvider = ({ children }) => {
     }, [cartItems]);
 
     const addToCart = (item) => {
-        setCartItems((prevItems) => [...prevItems, item]);
+        setCartItems((prevItems) => ({
+            ...prevItems,
+            [item._id]: {
+                ...item,
+                quantity: (prevItems[item._id]?.quantity || 0) + 1,
+            },
+        }));
     };
 
     const removeFromCart = (itemId) => {
-        setCartItems((prevItems) => prevItems.filter(item => item.id !== itemId));
+        setCartItems((prevItems) => {
+            const updatedItems = { ...prevItems };
+            delete updatedItems[itemId];
+            return updatedItems;
+        });
+    };
+
+    const updateQuantity = (itemId, quantity) => {
+        setCartItems((prevItems) => ({
+            ...prevItems,
+            [itemId]: {
+                ...prevItems[itemId],
+                quantity,
+            },
+        }));
     };
 
     return (
-        <CartContext.Provider value={{ cartItems, addToCart, removeFromCart }}>
+        <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateQuantity }}>
             {children}
         </CartContext.Provider>
     );
