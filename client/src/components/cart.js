@@ -23,9 +23,8 @@ const Cart = () => {
 
     return (
         <div>
-            <h1>Cart Page</h1>
             {Object.keys(cartItems).length === 0 ? (
-                <p>Your cart is empty</p>
+                <p className='cart-empty'>Your cart is empty</p>
             ) : (
                 Object.values(cartItems).map(item => (
                     <div className='cart-item' key={item._id}>

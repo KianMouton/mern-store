@@ -227,6 +227,13 @@
   color: black;
 }
 
+.cart-empty {
+  text-align: center;
+  background-color: black;
+  color: white;
+  font-size: 30px;
+}
+
 /* media queries for desktop */
 @media (min-width: 1000px) {
   .navbar {
