@@ -1,6 +1,5 @@
 import Navbar from './navbar.js'
 import FrontPage from './front-page.js';
-import Products from './products.js';
 import Footer from './footer.js';
 
 function Main() {
@@ -8,7 +7,6 @@ function Main() {
       <div className="App">
          <Navbar />
          <FrontPage />
-         <Products />
          <Footer />
       </div>
     );

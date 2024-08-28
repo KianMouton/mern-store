@@ -45,7 +45,6 @@ const Products = () => {
                 )
             })}
             </div>
-            <Link to='/products'><button className='load-more'>Load More</button></Link>
         </div>
         </div>
     )

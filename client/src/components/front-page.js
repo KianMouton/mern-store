@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import chubbySugarLogo  from '../images/chubby-sugar-logo.jpg';
 import { gsap } from 'gsap';
 import SplitText from 'split-text-js'; 
@@ -30,7 +31,32 @@ const FrontPage = () => {
         
     }, []); 
 
+    const [ products, setProducts ] = useState([]);
+
+    useEffect(() => {
+        getProducts();
+        
+    }, []); 
+
+    const BASE_URL = 'http://localhost:3001';
+
+    const getProducts = async () => {
+        try {
+            const response = await fetch(`${BASE_URL}/products`)
+            const data = await response.json();
+            setProducts(data);
+
+            console.log(response);
+        }
+        catch(err) {
+            console.error(err);
+            alert('Failed to fetch products');
+            return [];
+        } 
+    }
+
     return (
+        <div>
         <div className='front-page'>
             <div className='text'>
                 <h1>Get custom made </h1>
@@ -48,7 +74,29 @@ const FrontPage = () => {
             <div className='front-image'>
                 <img className='logo' src={chubbySugarLogo} alt='chubby sugar logo' />
             </div>
+            </div>
+            <div>
+        <div className='products'>
+            <h1>Products</h1>
+            <div className='products-container'>
+            {products.slice(0, 3).map((product) => {
+                return (
+                    <Link to={`/products/${product._id}`}>
+                    <div key={product._id} className='product'>
+                        <img src={product.imageUrl} alt={product.name} />
+                        <h3>{product.name}</h3>
+                        <p>{product.description}</p>
+                        <p>R{product.price}</p>
+                    </div>
+                    </Link>
+                )
+            })}
+            </div>
+            <Link to='/products'><button className='load-more'>see all</button></Link>
         </div>
+        </div>
+            </div>
+            
     );
 }
 
