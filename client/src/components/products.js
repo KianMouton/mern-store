@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 const Products = () => {
     const [products, setProducts] = useState([]);
-    const [type, setType] = useState(undefined);
+    const [type, setType] = useState('');
 
     useEffect(() => {
         getProducts();
@@ -28,7 +28,7 @@ const Products = () => {
     const handleBabyGrows = () => setType('BabyGrows');
     const handleMugs = () => setType('Mugs');
     const handleSqueezies = () => setType('Squeezies');
-    const handleAll = () => setType(undefined);
+    const handleAll = () => setType('');
 
     return (
         <div className='products'>
@@ -40,21 +40,33 @@ const Products = () => {
                 <button onClick={handleSqueezies} className='product-btn'>Squeezies</button>
                 <button onClick={handleAll} className='product-btn'>All</button>
             </div>
-            <div className='products-container'>
-                {products
-                    .filter(product => type ? product.type === type : true) // Filter logic
-                    .map(product => (
-                        <Link to={`/products/${product._id}`} key={product._id}> {/* Key on Link */}
-                            <div className='product'>
-                                <img src={product.imageUrl} alt={product.name} />
-                                <h3>{product.name}</h3>
-                                <p>{product.description}</p>
-                                <p>R{product.price}</p>
-                            </div>
-                        </Link>
-                    ))}
-            </div>
-        </div>
+        <div className='products-container'>
+        {type !== '' ? (
+        products.filter(product => product.type === type)
+        .map(product => (
+            <Link to={`/products/${product._id}`} key={product._id}>
+                <div className='product'>
+                    <img src={product.imageUrl} alt={product.name} />
+                    <h3>{product.name}</h3>
+                    <p>{product.description}</p>
+                    <p>R{product.price}</p>
+                </div>
+            </Link>
+        ))
+        ) : (
+        products.map(product => (
+            <Link to={`/products/${product._id}`} key={product._id}>
+                <div className='product'>
+                    <img src={product.imageUrl} alt={product.name} />
+                    <h3>{product.name}</h3>
+                    <p>{product.description}</p>
+                    <p>R{product.price}</p>
+                </div>
+            </Link>
+        ))
+        )}
+        </div>  
+    </div>
     );
 };
 
