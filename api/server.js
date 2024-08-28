@@ -14,6 +14,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // Define schema
 const productSchema = new Schema({
+    type: {
+        type: String,
+        required: true
+    },
     imageUrl: {
         type: String,
         required: true
