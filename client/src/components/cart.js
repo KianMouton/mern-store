@@ -2,7 +2,6 @@ import { useContext } from 'react';
 import { CartContext } from './cartContext.js';
 
 const Cart = () => {
-    // Accessing the context inside of cartContext.js
     const { cartItems, removeFromCart, updateQuantity } = useContext(CartContext);
 
     const handleRemoveFromCart = (productId) => {
@@ -21,8 +20,38 @@ const Cart = () => {
         updateQuantity(itemId, currentQuantity - 1);
     };
 
+    const handlePayment = async () => {
+        // Calculate total amount from cart items
+        const totalAmount = Object.values(cartItems).reduce((total, item) => {
+            return total + (item.price * (item.quantity || 1)); // Assuming price is in ZAR
+        }, 0);
+
+        try {
+            const response = await fetch('http://localhost:3001/payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    amount: totalAmount * 100, // Convert to cents if necessary
+                    currency: 'ZAR',
+                }),
+            });
+
+            const data = await response.json();
+            if (data.redirectUrl) {
+                window.location.href = data.redirectUrl;; // Redirect to Yoco checkout
+            } else {
+                console.error('Payment initiation failed:', data);
+            }
+        } catch (error) {
+            console.error('Error during payment:', error);
+        }
+    };
+
     return (
         <div>
+            <button className='product-btn' onClick={handlePayment}>Pay for all</button>
             {Object.keys(cartItems).length === 0 ? (
                 <p className='cart-empty'>Your cart is empty</p>
             ) : (

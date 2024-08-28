@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const { Schema, model } = mongoose; 
 const dotenv = require('dotenv'); 
+const axios = require('axios');
 
 dotenv.config(); 
 
@@ -103,6 +104,40 @@ app.get('/products/:id', async (req, res) => {
         res.status(500).send(error);
     }
 })
+
+//payment endpoint
+app.post('/payment', async (req, res) => {
+    console.log("Payment request received:", req.body); // Log the request body
+
+    const { amount, currency } = req.body;
+
+    try {
+        const response = await axios.post('https://payments.yoco.com/api/checkouts', {
+            amount: amount,
+            currency: currency,
+            // Add any other required fields here
+        }, {
+            headers: {
+            'Authorization': `Bearer ${process.env.TEST_SECRET_KEY}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        // Log Yoco's response for debugging
+        console.log("Yoco response:", response.data);
+
+        // Check if the response contains the checkout URL
+        if (response.data && response.data.redirectUrl) {
+            res.json({ redirectUrl: response.data.redirectUrl });
+        } else {
+            console.error('Yoco did not return a checkout URL:', response.data);
+            res.status(500).json({ error: 'Failed to create checkout session' });
+        }
+    } catch (error) {
+        console.error('Error creating checkout session:', error.response ? error.response.data : error.message);
+        res.status(500).json({ error: 'Error processing payment' });
+    }
+});
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
