@@ -61,10 +61,10 @@ const FrontPage = () => {
             <div className='text'>
                 <h1>Get custom made </h1>
                 <div className='text-wrapper'>
-                    <p>Cups</p>
-                    <p>T-shirts</p>
-                    <p>Glasses</p>
-                    <p>Stickers</p>
+                    <p>T-Shirts</p>
+                    <p>Mugs</p>
+                    <p>Squeezies</p>
+                    <p>BabyGrows</p>
                     <p>Anything</p>
                 </div>
                 <p className='description'>Chubby Sugar creates custom clothing
