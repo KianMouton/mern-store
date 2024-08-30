@@ -4,6 +4,7 @@ const cors = require('cors');
 const { Schema, model } = mongoose; 
 const dotenv = require('dotenv'); 
 const axios = require('axios');
+const bodyParser = require('body-parser');
 
 dotenv.config(); 
 
@@ -12,6 +13,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json({ verify: (req, res, buf) => { req.rawBody = buf.toString(); } }));
 
 // Define schema
 const productSchema = new Schema({
@@ -39,31 +41,6 @@ const productSchema = new Schema({
 
 // model from schema
 const Product = model('Product', productSchema);
-
-//schema for cart
-const cartSchema = new Schema({
-    items: [
-        {
-            productId: {
-                type: [String],
-                ref: 'Product'
-            },
-            quantity: {
-                type: Number,
-                required: true,
-                min: 1
-            }
-        }
-    ]
-});
-
-const Cart = model('Cart', cartSchema);
-
-// endpoint to add items to the cart
-app.post('/cart/:id', (req, res) => {
-    const productId = req.params.id;
-    
-})
 
 //test / endpoint
 app.get('/', (req, res) => {
@@ -137,6 +114,17 @@ app.post('/payment', async (req, res) => {
         console.error('Error creating checkout session:', error.response ? error.response.data : error.message);
         res.status(500).json({ error: 'Error processing payment' });
     }
+});
+
+//webhook endpoint for payment
+//using ngrok for tunneling on port 3001
+//npx ngrok http 3001 (cmd command)
+app.post("/webhook", async (req, res) => {
+    const requestBody = req.rawBody;
+
+    // Verify and process the received data
+    console.log("webhook response", requestBody);
+    res.sendStatus(200);
 });
 
 // Connect to MongoDB
