@@ -5,6 +5,7 @@ const { Schema, model } = mongoose;
 const dotenv = require('dotenv'); 
 const axios = require('axios');
 const bodyParser = require('body-parser');
+const nodemailer = require('nodemailer');
 
 dotenv.config(); 
 
@@ -122,6 +123,17 @@ app.post('/payment', async (req, res) => {
     }
 });
 
+//nodemailer configuration
+const transport = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASSWORD
+    }
+});
+
 //webhook endpoint for payment
 //using ngrok for tunneling on port 3001
 //npx ngrok http 3001 (cmd command)
@@ -132,16 +144,32 @@ app.post("/webhook", async (req, res) => {
     // Verify and process the received data
     console.log("webhook response: ", requestBody);
     console.log("checkout Id: ", checkoutId);
-    
+
     //verify the payment
     if (checkoutSessions[checkoutId]) {
         console.log("payment verified:");
+
+        const mailOptions = {
+            from: process.env.GMAIL_USER,
+            to: process.env.GMAIL_USER,
+            subject: 'Payment Successful',
+            text: `Payment of ${checkoutSessions[checkoutId].amount} ${checkoutSessions[checkoutId].currency} was successful.`
+        };
+
+        try {
+            await transport.sendMail(mailOptions);
+            console.log("Email sent successfully");
+        } catch (err) {
+            console.error('error sending mail', err)
+        }
+
+        delete checkoutSessions[checkoutId];
+
+        res.sendStatus(200);
     } else {
         console.error("Payment not found in storage:", checkoutId);
         return res.status(404).json({ error: 'Payment not found' });
     }
-
-    res.sendStatus(200);
 });
 
 // Connect to MongoDB
