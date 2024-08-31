@@ -82,6 +82,8 @@ app.get('/products/:id', async (req, res) => {
     }
 })
 
+const checkoutSessions = {};
+
 //payment endpoint
 app.post('/payment', async (req, res) => {
     console.log("Payment request received:", req.body); // Log the request body
@@ -106,6 +108,10 @@ app.post('/payment', async (req, res) => {
         // Check if the response contains the checkout URL
         if (response.data && response.data.redirectUrl) {
             res.json({ redirectUrl: response.data.redirectUrl });
+
+            const checkoutId = response.data.metadata.checkoutId;
+            // add the checkout to the storage to verify with webhook
+            checkoutSessions[checkoutId] = { amount, currency };
         } else {
             console.error('Yoco did not return a checkout URL:', response.data);
             res.status(500).json({ error: 'Failed to create checkout session' });
@@ -120,10 +126,21 @@ app.post('/payment', async (req, res) => {
 //using ngrok for tunneling on port 3001
 //npx ngrok http 3001 (cmd command)
 app.post("/webhook", async (req, res) => {
-    const requestBody = req.rawBody;
-
+    const requestBody = req.body;
+    const checkoutId = requestBody.payload.metadata.checkoutId;
+    
     // Verify and process the received data
-    console.log("webhook response", requestBody);
+    console.log("webhook response: ", requestBody);
+    console.log("checkout Id: ", checkoutId);
+    
+    //verify the payment
+    if (checkoutSessions[checkoutId]) {
+        console.log("payment verified:");
+    } else {
+        console.error("Payment not found in storage:", checkoutId);
+        return res.status(404).json({ error: 'Payment not found' });
+    }
+
     res.sendStatus(200);
 });
 
