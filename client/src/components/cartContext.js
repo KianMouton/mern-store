@@ -18,14 +18,17 @@ export const CartProvider = ({ children }) => {
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
     }, [cartItems]);
 
-    const addToCart = (item) => {
-        setCartItems((prevItems) => ({
-            ...prevItems,
-            [item._id]: {
-                ...item,
-                quantity: (prevItems[item._id]?.quantity || 0) + 1,
-            },
-        }));
+    const addToCart = (item, size) => {
+        const existingItem = cartItems[item._id];
+        if (existingItem) {
+            // Update quantity and size if item already exists
+            existingItem.quantity += 1;
+            existingItem.size = size; // Update size
+        } else {
+            // Add new item with size
+            cartItems[item._id] = { ...item, quantity: 1, size: size };
+        }
+        setCartItems({ ...cartItems });
     };
 
     const removeFromCart = (itemId) => {
