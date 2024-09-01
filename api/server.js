@@ -152,7 +152,7 @@ app.post("/webhook", async (req, res) => {
         const mailOptions = {
             from: process.env.GMAIL_USER,
             to: process.env.GMAIL_USER,
-            subject: 'Payment Successful',
+            subject: 'payment test',
             text: `Payment of ${checkoutSessions[checkoutId].amount} ${checkoutSessions[checkoutId].currency} was successful.`
         };
 
