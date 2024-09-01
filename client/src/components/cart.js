@@ -35,6 +35,7 @@ const Cart = () => {
                 body: JSON.stringify({
                     amount: totalAmount * 100, // Convert to cents if necessary
                     currency: 'ZAR',
+                    products: cartItems
                 }),
             });
 
@@ -59,6 +60,20 @@ const Cart = () => {
                     <div className='cart-item' key={item._id}>
                         <img className='cart-img' src={item.imageUrl} alt={item.name} />
                         <h3>{item.name}</h3>
+                        {item.type === "T-shirts" && 
+                        <div className='size'>
+                            <p>size: {item.size}</p>
+                            <button className='size-btn'>XS</button>
+                            <button className='size-btn'>S</button>
+                            <button className='size-btn'>M</button>
+                            <button className='size-btn'>L</button>
+                            <button className='size-btn'>XL</button>
+                            <button className='size-btn'>2XL</button>
+                            <button className='size-btn'>3XL</button>
+                            <button className='size-btn'>4Xl</button>
+                            <button className='size-btn'>5XL</button>
+                        </div>
+                        }
                         <p>Quantity:</p>
                         <div className='quantity-div'>
                             <button onClick={() => handleLessQuantity(item._id)}>&larr;</button>

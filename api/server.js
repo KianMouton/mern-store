@@ -89,7 +89,7 @@ const checkoutSessions = {};
 app.post('/payment', async (req, res) => {
     console.log("Payment request received:", req.body); // Log the request body
 
-    const { amount, currency } = req.body;
+    const { amount, currency, products } = req.body;
 
     try {
         const response = await axios.post('https://payments.yoco.com/api/checkouts', {
@@ -112,7 +112,7 @@ app.post('/payment', async (req, res) => {
 
             const checkoutId = response.data.metadata.checkoutId;
             // add the checkout to the storage to verify with webhook
-            checkoutSessions[checkoutId] = { amount, currency };
+            checkoutSessions[checkoutId] = { amount, currency, products };
         } else {
             console.error('Yoco did not return a checkout URL:', response.data);
             res.status(500).json({ error: 'Failed to create checkout session' });
@@ -121,7 +121,7 @@ app.post('/payment', async (req, res) => {
         console.error('Error creating checkout session:', error.response ? error.response.data : error.message);
         res.status(500).json({ error: 'Error processing payment' });
     }
-});
+})
 
 //nodemailer configuration
 const transport = nodemailer.createTransport({
@@ -152,8 +152,9 @@ app.post("/webhook", async (req, res) => {
         const mailOptions = {
             from: process.env.GMAIL_USER,
             to: process.env.GMAIL_USER,
-            subject: 'payment test',
-            text: `Payment of ${checkoutSessions[checkoutId].amount} ${checkoutSessions[checkoutId].currency} was successful.`
+            subject: 'Payment Successful',
+            text: `Payment of ${checkoutSessions[checkoutId].amount} ${checkoutSessions[checkoutId].currency} was successful.` +
+                  `\nProducts:\n${Object.values(checkoutSessions[checkoutId].products).map(product => `${product.name} - R${product.price}`).join('\n')}`
         };
 
         try {
