@@ -31,6 +31,19 @@ export const CartProvider = ({ children }) => {
         setCartItems({ ...cartItems });
     };
 
+    const addToBabyGrow = (item, size) => {
+        const existingItem = cartItems[item._id];
+        if (existingItem) {
+            // Update quantity and size if item already exists
+            existingItem.quantity += 1;
+            existingItem.size = size; // Update size
+        } else {
+            // Add new item with size
+            cartItems[item._id] = { ...item, quantity: 1, size: size };
+        }
+        setCartItems({ ...cartItems });
+    };
+
     const removeFromCart = (itemId) => {
         setCartItems((prevItems) => {
             const updatedItems = { ...prevItems };
@@ -50,7 +63,7 @@ export const CartProvider = ({ children }) => {
     };
 
     return (
-        <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateQuantity }}>
+        <CartContext.Provider value={{ cartItems, addToCart, addToBabyGrow, removeFromCart, updateQuantity }}>
             {children}
         </CartContext.Provider>
     );

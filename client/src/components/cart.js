@@ -28,25 +28,31 @@ const Cart = () => {
         }));
     };
 
-    //check if all sizes are selected
-    const areAllTshirtsWithSize = () => {
+    // Check if all sizes are selected for T-shirts and BabyGrows
+    const areAllSizesSelected = () => {
         return Object.values(cartItems).every(item => {
-            return item.type !== "T-shirts" || (item.type === "T-shirts" && item.size);
+            if (item.type === "T-shirts" || item.type === "BabyGrows") {
+                return item.size || selectedSizes[item._id]; // Check if size is selected for T-shirts and BabyGrows
+            } else {
+                return true; // Allow other product types to pass the check
+            }
         });
     };
 
     const handlePayment = async () => {
-        //check if user has sizes selected for shirts
-        if (!areAllTshirtsWithSize()) {
-            alert("Please select a size for all T-shirts before proceeding to payment.");
+        // Check if user has sizes selected for all items that require size selection
+        if (!areAllSizesSelected()) {
+            alert("Please select a size for all T-shirts and BabyGrows before proceeding to payment.");
             return;
         }
+
         // Calculate total amount from cart items
         const totalAmount = Object.values(cartItems).reduce((total, item) => {
-            let itemPrice = item.price
-            if (item.type === "T-shirts" && ['4XL', '5XL'].includes(item.size)) {
+            let itemPrice = item.price;
+            if (item.type === "T-shirts" && ['4XL', '5XL'].includes(item.size || selectedSizes[item._id])) {
                 itemPrice = 200; // Set price to R200 for 4XL and 5XL
             }
+            // Add specific pricing logic for BabyGrows if needed
             return total + (itemPrice * (item.quantity || 1)); // Assuming price is in ZAR
         }, 0);
 
@@ -65,7 +71,7 @@ const Cart = () => {
 
             const data = await response.json();
             if (data.redirectUrl) {
-                window.location.href = data.redirectUrl; // Redirect to Yoco checkout
+                window.location.href = data.redirectUrl; // Redirect to payment
             } else {
                 console.error('Payment initiation failed:', data);
             }
@@ -74,11 +80,15 @@ const Cart = () => {
         }
     };
 
+    // Define size options for T-shirts and BabyGrows
+    const tshirtSizes = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'];
+    const babyGrowSizes = ['0-3 Months', '3-6 Months', '6-12 Months', '12-18 Months', '18-24 Months'];
+
     return (
         <div>
-            <button className='product-btn'
-            onClick={handlePayment}
-            disbaled={!areAllTshirtsWithSize()}
+            <button className='pay-btn'
+                onClick={handlePayment}
+                disabled={!areAllSizesSelected()}
             >Pay for all</button>
             {Object.keys(cartItems).length === 0 ? (
                 <p className='cart-empty'>Your cart is empty</p>
@@ -87,10 +97,24 @@ const Cart = () => {
                     <div className='cart-item' key={item._id}>
                         <img className='cart-img' src={item.imageUrl} alt={item.name} />
                         <h3>{item.name}</h3>
-                        {item.type === "T-shirts" && 
+                        {/* Render size selection only for T-shirts and BabyGrows */}
+                        {(item.type === "T-shirts" || item.type === "BabyGrows") && 
                         <div className='size'>
                             <p>Size: {selectedSizes[item._id] || item.size || 'Select Size'}</p>
-                            {['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'].map(size => (
+                            {item.type === "T-shirts" && tshirtSizes.map(size => (
+                                <button 
+                                    key={size} 
+                                    className='size-btn' 
+                                    onClick={() => {
+                                        handleSizeChange(item._id, size);
+                                        // Update the cart item size in context if needed
+                                        item.size = size; // Update size in the item directly
+                                    }}
+                                >
+                                    {size}
+                                </button>
+                            ))}
+                            {item.type === "BabyGrows" && babyGrowSizes.map(size => (
                                 <button 
                                     key={size} 
                                     className='size-btn' 
@@ -111,7 +135,7 @@ const Cart = () => {
                             <p className='quantity'>{item.quantity || 0}</p>
                             <button onClick={() => handleAddQuantity(item._id)}>&rarr;</button>
                         </div>
-                        <p>Price: R{['4XL', '5XL'].includes(item.size) ? 200 : item.price}</p>
+                        <p>Price: R{['4XL', '5XL'].includes(item.size || selectedSizes[item._id]) ? 200 : item.price}</p>
                         <button onClick={() => handleRemoveFromCart(item._id)}>Remove</button>
                     </div>
                 ))

@@ -154,7 +154,7 @@ app.post("/webhook", async (req, res) => {
             to: process.env.GMAIL_USER,
             subject: 'Payment Successful',
             text: `Payment of ${checkoutSessions[checkoutId].amount} ${checkoutSessions[checkoutId].currency} was successful.` +
-                  `\nProducts:\n${Object.values(checkoutSessions[checkoutId].products).map(product => `${product.name} - ${product.size ? product.size : 'no size for item'} - R${product.price}`).join('\n')}`
+                  `\nProducts:\n${Object.values(checkoutSessions[checkoutId].products).map(product => ` ${product.type} - ${product.name} - ${product.size ? product.size : 'no size for item'} - R${product.price} - quantity:  ${product.quantity}`).join('\n')}`
         };
 
         try {
