@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import chubbySugarLogo  from '../images/chubby-sugar-logo.jpg';
+import chubbySugarLogo  from '../logo/chubby-sugar-logo.jpg';
 import { gsap } from 'gsap';
 import SplitText from 'split-text-js'; 
 gsap.registerPlugin(SplitText);

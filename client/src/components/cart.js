@@ -1,9 +1,11 @@
 import { useContext, useState } from 'react';
 import { CartContext } from './cartContext.js';
+import Modal from './modal.js'; // Import the Modal component
 
 const Cart = () => {
     const { cartItems, removeFromCart, updateQuantity } = useContext(CartContext);
-    const [selectedSizes, setSelectedSizes] = useState({}); // State to track selected sizes
+    const [selectedSizes, setSelectedSizes] = useState({});
+    const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
 
     const handleRemoveFromCart = (productId) => {
         removeFromCart(productId);
@@ -28,7 +30,6 @@ const Cart = () => {
         }));
     };
 
-    // Check if all sizes are selected for T-shirts and BabyGrows
     const areAllSizesSelected = () => {
         return Object.values(cartItems).every(item => {
             if (item.type === "T-shirts" || item.type === "BabyGrows") {
@@ -39,20 +40,21 @@ const Cart = () => {
         });
     };
 
-    const handlePayment = async () => {
-        // Check if user has sizes selected for all items that require size selection
+    const handlePayment = () => {
         if (!areAllSizesSelected()) {
             alert("Please select a size for all T-shirts and BabyGrows before proceeding to payment.");
             return;
         }
+        setIsModalOpen(true); // Open the modal to collect contact info
+    };
 
+    const handleModalSubmit = async (contactInfo) => {
         // Calculate total amount from cart items
         const totalAmount = Object.values(cartItems).reduce((total, item) => {
             let itemPrice = item.price;
             if (item.type === "T-shirts" && ['4XL', '5XL'].includes(item.size || selectedSizes[item._id])) {
                 itemPrice = 200; // Set price to R200 for 4XL and 5XL
             }
-            // Add specific pricing logic for BabyGrows if needed
             return total + (itemPrice * (item.quantity || 1)); // Assuming price is in ZAR
         }, 0);
 
@@ -63,9 +65,10 @@ const Cart = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    amount: totalAmount * 100, // Convert to cents if necessary
+                    amount: totalAmount * 100, // Convert to cents
                     currency: 'ZAR',
-                    products: cartItems
+                    products: cartItems,
+                    contactInfo: contactInfo // Send contact info to the server
                 }),
             });
 
@@ -78,18 +81,18 @@ const Cart = () => {
         } catch (error) {
             console.error('Error during payment:', error);
         }
+        setIsModalOpen(false); // Close the modal after processing payment
     };
 
-    // Define size options for T-shirts and BabyGrows
+    // Size options for T-shirts and BabyGrows
     const tshirtSizes = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'];
     const babyGrowSizes = ['0-3 Months', '3-6 Months', '6-12 Months', '12-18 Months', '18-24 Months'];
 
     return (
         <div>
-            <button className='pay-btn'
-                onClick={handlePayment}
-                disabled={!areAllSizesSelected()}
-            >Pay for all</button>
+            <button className='pay-btn' onClick={handlePayment} disabled={!areAllSizesSelected()}>
+                Pay for all
+            </button>
             {Object.keys(cartItems).length === 0 ? (
                 <p className='cart-empty'>Your cart is empty</p>
             ) : (
@@ -107,7 +110,6 @@ const Cart = () => {
                                     className='size-btn' 
                                     onClick={() => {
                                         handleSizeChange(item._id, size);
-                                        // Update the cart item size in context if needed
                                         item.size = size; // Update size in the item directly
                                     }}
                                 >
@@ -120,7 +122,6 @@ const Cart = () => {
                                     className='size-btn' 
                                     onClick={() => {
                                         handleSizeChange(item._id, size);
-                                        // Update the cart item size in context if needed
                                         item.size = size; // Update size in the item directly
                                     }}
                                 >
@@ -140,6 +141,11 @@ const Cart = () => {
                     </div>
                 ))
             )}
+            <Modal 
+                isOpen={isModalOpen} 
+                onClose={() => setIsModalOpen(false)} 
+                onSubmit={handleModalSubmit} 
+            />
         </div>
     );
 };

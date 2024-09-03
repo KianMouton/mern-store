@@ -288,6 +288,56 @@
   box-shadow: 5px 5px 20px rgb(0, 0, 0);
 }
 
+/* Add this to your CSS file */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  width: 400px;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: white;
+}
+
+.modal-content h2, input {
+  background: white;
+  color: black;
+  padding: 20px;
+}
+
+.modal-content button {
+  border-radius: 15px;
+  height: 30px;
+}
+
+.cancel-div {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.cancel-btn {
+  margin-top: 20px;
+}
+
 /* media queries for desktop */
 @media (min-width: 1000px) {
   .navbar {
