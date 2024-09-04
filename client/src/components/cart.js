@@ -41,6 +41,10 @@ const Cart = () => {
     };
 
     const handlePayment = () => {
+        if (Object.keys(cartItems).length === 0) {
+            alert("Your cart is empty. Please add items before proceeding to payment.");
+            return;
+        }
         if (!areAllSizesSelected()) {
             alert("Please select a size for all T-shirts and BabyGrows before proceeding to payment.");
             return;

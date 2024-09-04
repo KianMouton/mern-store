@@ -89,7 +89,7 @@ const checkoutSessions = {};
 app.post('/payment', async (req, res) => {
     console.log("Payment request received:", req.body); // Log the request body
 
-    const { amount, currency, products } = req.body;
+    const { amount, currency, products, contactInfo } = req.body;
 
     try {
         const response = await axios.post('https://payments.yoco.com/api/checkouts', {
@@ -112,7 +112,7 @@ app.post('/payment', async (req, res) => {
 
             const checkoutId = response.data.metadata.checkoutId;
             // add the checkout to the storage to verify with webhook
-            checkoutSessions[checkoutId] = { amount, currency, products };
+            checkoutSessions[checkoutId] = { amount, currency, products, contactInfo };
         } else {
             console.error('Yoco did not return a checkout URL:', response.data);
             res.status(500).json({ error: 'Failed to create checkout session' });
@@ -154,7 +154,8 @@ app.post("/webhook", async (req, res) => {
             to: process.env.GMAIL_USER,
             subject: 'Payment Successful',
             text: `Payment of ${checkoutSessions[checkoutId].amount} ${checkoutSessions[checkoutId].currency} was successful.` +
-                  `\nProducts:\n${Object.values(checkoutSessions[checkoutId].products).map(product => ` ${product.type} - ${product.name} - ${product.size ? product.size : 'no size for item'} - R${product.price} - quantity:  ${product.quantity}`).join('\n')}`
+                  `\nProducts:\n${Object.values(checkoutSessions[checkoutId].products).map(product => ` ${product.type} - ${product.name} - ${product.size ? product.size : 'no size for item'} - R${product.price} - quantity:  ${product.quantity}`).join('\n')}` +
+                  `\nPhone Number:\n${Object.values(checkoutSessions[checkoutId].contactInfo).join('')}`
         };
 
         try {
